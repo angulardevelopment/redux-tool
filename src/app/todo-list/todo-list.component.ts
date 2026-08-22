@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { NgRedux, select } from '@angular-redux/store';
 import { IAppState, ITodo } from '../store';
 import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO } from '../actions';
+import { FormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
 @Component({
-  selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss'],
+    selector: 'app-todo-list',
+    templateUrl: './todo-list.component.html',
+    styleUrls: ['./todo-list.component.scss'],
+    imports: [
+    FormsModule,
+    AsyncPipe
+],
 })
 export class TodoListComponent implements OnInit {
   @select() todos;
