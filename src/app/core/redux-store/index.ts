@@ -22,6 +22,9 @@ export class NgRedux<RootState = any> {
     middleware: any[] = [],
     enhancers: any[] = []
   ) {
+    if (this._store) {
+      return;
+    }
     const devToolsCompose =
       typeof window !== 'undefined' &&
       (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -44,7 +47,9 @@ export class NgRedux<RootState = any> {
     const storeObservable = new Observable<RootState>((observer) => {
       observer.next(store.getState());
       const unsubscribe = store.subscribe(() => {
-        observer.next(store.getState());
+        this.ngZone.run(() => {
+          observer.next(store.getState());
+        });
       });
       return () => {
         unsubscribe();
@@ -121,11 +126,15 @@ export function select<T = any>(
 ) {
   return function (target: any, key: string | symbol) {
     const bindingKey = selector !== undefined ? selector : key;
+    const cacheKey = Symbol(String(key));
     function getter(this: any) {
       if (!NgRedux.instance) {
         return undefined;
       }
-      return NgRedux.instance.select(bindingKey, comparator);
+      if (!this[cacheKey]) {
+        this[cacheKey] = NgRedux.instance.select(bindingKey, comparator);
+      }
+      return this[cacheKey];
     }
 
     delete target[key];

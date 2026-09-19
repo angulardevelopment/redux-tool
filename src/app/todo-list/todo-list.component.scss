@@ -1,3 +1,14 @@
+span {
+  cursor: pointer;
+  user-select: none;
+}
+
 .completed {
   text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.badge {
+  font-size: 85%;
+  padding: 0.35em 0.6em;
 }

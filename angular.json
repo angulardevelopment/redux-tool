@@ -61,6 +61,11 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+             "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
@@ -72,8 +77,12 @@
           "configurations": {
             "production": {
               "buildTarget": "redux:build:production"
+            },
+            "development": {
+              "buildTarget": "redux:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
